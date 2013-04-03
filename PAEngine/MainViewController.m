@@ -8,6 +8,9 @@
 
 #import "MainViewController.h"
 
+#import "PASineGenerator.h"
+//#import "PASource.h"
+
 @interface MainViewController ()
 
 @end
@@ -19,10 +22,11 @@
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if (self) {
    
-        self.audioController = [[PAController alloc] init];
+        self.audioController = [PAController sharedInstance];
 
-        [self.audioController addSourceWithFrequency:550.0];
-        [self.audioController addSourceWithFrequency:880.0];
+        self.sineGenerator = [[PASineGenerator alloc] sineGeneratorWithFrequency:440.0];
+        [self.sineGenerator setPan:0.5f];
+        [self.audioController addSoundSource:self.sineGenerator];
 
     }
     return self;
@@ -30,6 +34,15 @@
 
 - (IBAction)onProcessButton:(id)sender {
     ([sender state] == 1) ? [self.audioController start] : [self.audioController stop];
+}
+
+- (IBAction)onPanSliderChange:(id)sender {
+    [self.sineGenerator setPan:[sender floatValue]];
+    
+}
+
+- (IBAction)onVolumeSliderChange:(id)sender {
+    [self.sineGenerator setVolume:[sender floatValue]];
 }
 
 - (void)destroy {

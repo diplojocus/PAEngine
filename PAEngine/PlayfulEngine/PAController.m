@@ -10,16 +10,11 @@
 #include <Accelerate/Accelerate.h>
 
 #import "PAController.h"
-
 #import "PASource.h"
-
-#define sineFrequency 440.0
 
 static void CheckResult(OSStatus result, const char *operation) {
     if (result == noErr) return;
-    
     char errorString[20];
-    
     *(UInt32 *)(errorString + 1) = CFSwapInt32HostToBig(result);
     if (isprint(errorString[1]) && isprint(errorString[2]) &&
         isprint(errorString[3]) && isprint(errorString[4])) {
@@ -29,14 +24,13 @@ static void CheckResult(OSStatus result, const char *operation) {
         sprintf(errorString, "%d", (int)result);
     }
     fprintf(stderr, "Error: %s (%s)\n", operation, errorString);
-    
     NSError *error = [NSError errorWithDomain:NSOSStatusErrorDomain code:result userInfo:nil];
     NSLog(@"%@", error);
     
     exit(1);
 }
 
-OSStatus renderProc(
+OSStatus renderCallback (
                     void *inRefCon,
                     AudioUnitRenderActionFlags *ioActionFlags,
                     const AudioTimeStamp *inTimeStamp,
@@ -47,20 +41,25 @@ OSStatus renderProc(
     PAController *audioController = (__bridge PAController *)(inRefCon);
     Float32 *leftBuffer = (Float32 *)ioData->mBuffers[0].mData;
     Float32 *rightBuffer = (Float32 *)ioData->mBuffers[1].mData;
-    [audioController processLeftOutput:leftBuffer andRightOutput:rightBuffer withNumFrames:inNumberFrames];
-    
+    [audioController processBuffersLeft:leftBuffer right:rightBuffer numFrames:inNumberFrames];
     return noErr;
 };
 
 @implementation PAController
 
++ (PAController *)sharedInstance {
+    static PAController *sharedInstance = nil;
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        sharedInstance = [[PAController alloc] init];
+    });
+    return sharedInstance;
+}
+
 - (id)init {
-    
     self = [super init];
     if (self) {
-        
         self.sourcesArray = [[NSMutableArray alloc] initWithCapacity:0];
-        
         
         // set up output unit and callback
         AudioComponentDescription outputcd = {0};
@@ -73,15 +72,13 @@ OSStatus renderProc(
             printf("can't get output unit");
             exit(-1);
         }
-       
         CheckResult(AudioComponentInstanceNew(comp,
                                               &_outputUnit),
                     "Couldn't open component for outputUnit");
         
-        
         // Register the render callback
         AURenderCallbackStruct input;
-        input.inputProc = renderProc;
+        input.inputProc = renderCallback;
         input.inputProcRefCon = (__bridge void *)(self);
         
         CheckResult(AudioUnitSetProperty(_outputUnit,
@@ -97,7 +94,6 @@ OSStatus renderProc(
                     "Couldn't initialise output unit");
         
     }
-    
     return self;
 }
 
@@ -115,33 +111,31 @@ OSStatus renderProc(
     AudioOutputUnitStop(_outputUnit);
 }
 
-- (void)addSourceWithFrequency:(double)freq {
-    PASource *newSource = [[PASource alloc] init];
-    [newSource setFrequency:freq];
-    [self.sourcesArray addObject:newSource];
+- (void)addSoundSource:(PASource *)sourceObject {
+    [self.sourcesArray addObject:sourceObject];
 }
 
-- (void)processLeftOutput:(Float32 *)leftOutBuffer andRightOutput:(Float32 *)rightOutBuffer withNumFrames:(UInt32)numFrames {
-
-    Float32 leftFrame[numFrames];
-    Float32 rightFrame[numFrames];
-    memset(leftFrame, 0, numFrames * sizeof(UInt32));
-    memset(rightFrame, 0, numFrames * sizeof(UInt32));
+- (void)processBuffersLeft:(Float32 *)leftBuffer right:(Float32 *)rightBuffer numFrames:(UInt32)inNumberFrames {
+    Float32 leftSumBuffer[inNumberFrames];
+    Float32 rightSumBuffer[inNumberFrames];
+    memset(leftSumBuffer, 0, inNumberFrames * sizeof(UInt32));
+    memset(rightSumBuffer, 0, inNumberFrames * sizeof(UInt32));
     
     for (PASource *source in self.sourcesArray) {
-        Float32 inputLeftFrame[numFrames];
-        Float32 inputRightFrame[numFrames];
+        Float32 leftSourceBuffer[inNumberFrames];
+        Float32 rightSourceBuffer[inNumberFrames];
         
-        [source processBuffersLeft:inputLeftFrame right:inputRightFrame withNumSamples:numFrames];
-
-        for (int frame = 0; frame < numFrames; ++frame) {
-            leftFrame[frame] += inputLeftFrame[frame];
-            rightFrame[frame] += inputRightFrame[frame];
+        [source processBuffersLeft:leftSourceBuffer right:rightSourceBuffer numFrames:inNumberFrames];
+        
+        for (int frame = 0; frame < inNumberFrames; ++frame) {
+            leftSumBuffer[frame] += leftSourceBuffer[frame];
+            rightSumBuffer[frame] += rightSourceBuffer[frame];
         }
-        
+        vDSP_vadd(leftSumBuffer, 1, leftSourceBuffer, 1, leftSumBuffer, 1, inNumberFrames);
+        vDSP_vadd(rightSumBuffer, 1, rightSourceBuffer, 1, rightSumBuffer, 1, inNumberFrames);
     }
-    memcpy(leftOutBuffer, leftFrame, numFrames * sizeof(UInt32));
-    memcpy(rightOutBuffer, rightFrame, numFrames * sizeof(UInt32));
+    memcpy(leftBuffer, leftSumBuffer, inNumberFrames * sizeof(UInt32));
+    memcpy(rightBuffer, rightSumBuffer, inNumberFrames * sizeof(UInt32));
 }
 
 @end

@@ -8,12 +8,16 @@
 
 #import <Foundation/Foundation.h>
 
-@interface PASource : NSObject
+@interface PASource : NSObject {
+    @protected double _startingFrameCount;
+}
 
-@property (nonatomic, assign) double startingFrameCount;
+@property (readonly, nonatomic, assign) double startingFrameCount;
+@property (nonatomic, assign) float volume;
+@property (nonatomic, assign) float pan;
 
-@property (nonatomic, assign) double frequency;
-
-- (void)processBuffersLeft:(Float32 *)leftBuffer right:(Float32 *)rightBuffer withNumSamples:(UInt32)inNumSamples;
+- (void)processBuffersLeft:(Float32 *)leftBuffer
+                     right:(Float32 *)rightBuffer
+                 numFrames:(UInt32)inNumberFrames;
 
 @end

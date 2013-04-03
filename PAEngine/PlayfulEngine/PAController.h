@@ -9,13 +9,15 @@
 #import <Foundation/Foundation.h>
 #import <AudioUnit/AudioUnit.h>
 
+@class PASource;
+
 @interface PAController : NSObject
 
 @property (nonatomic, assign) AudioUnit outputUnit;
 @property (nonatomic, assign) double startingFrameCount;
 @property (nonatomic, strong) NSMutableArray *sourcesArray;
 
-- (id)init;
++ (PAController *)sharedInstance;
 
 - (void)destroy;
 
@@ -23,8 +25,8 @@
 
 - (void)stop;
 
-- (void)addSourceWithFrequency:(double)freq;
+- (void)addSoundSource:(PASource *)sourceObject;
 
-- (void)processLeftOutput:(Float32 *)leftOutBuffer andRightOutput:(Float32 *)rightOutBuffer withNumFrames:(UInt32)numFrames;
+- (void)processBuffersLeft:(Float32 *)leftBuffer right:(Float32 *)rightBuffer numFrames:(UInt32)inNumberFrames;
 
 @end
