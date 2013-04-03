@@ -8,14 +8,12 @@
 
 #import "PASource.h"
 
-#define sineFrequency 880.0
-
 @implementation PASource
 
 - (void)processBuffersLeft:(Float32 *)leftBuffer right:(Float32 *)rightBuffer withNumSamples:(UInt32)numFrames {
     
     double j = self.startingFrameCount;
-    double cycleLength = 44100.0 / sineFrequency;
+    double cycleLength = 44100.0 / self.frequency;
     int frame = 0;
     
     for (frame = 0; frame < numFrames; ++frame) {

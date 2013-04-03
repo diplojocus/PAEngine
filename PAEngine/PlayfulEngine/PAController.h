@@ -23,7 +23,7 @@
 
 - (void)stop;
 
-- (void)addSource;
+- (void)addSourceWithFrequency:(double)freq;
 
 - (void)processLeftOutput:(Float32 *)leftOutBuffer andRightOutput:(Float32 *)rightOutBuffer withNumFrames:(UInt32)numFrames;
 

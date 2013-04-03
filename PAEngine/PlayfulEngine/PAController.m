@@ -6,12 +6,14 @@
 //  Copyright (c) 2013 Joe White. All rights reserved.
 //
 
-#import <AudioToolbox/AudioToolbox.h>
+#include <AudioToolbox/AudioToolbox.h>
+#include <Accelerate/Accelerate.h>
 
 #import "PAController.h"
+
 #import "PASource.h"
 
-#define sineFrequency 880.0
+#define sineFrequency 440.0
 
 static void CheckResult(OSStatus result, const char *operation) {
     if (result == noErr) return;
@@ -113,43 +115,33 @@ OSStatus renderProc(
     AudioOutputUnitStop(_outputUnit);
 }
 
-- (void)addSource {
+- (void)addSourceWithFrequency:(double)freq {
     PASource *newSource = [[PASource alloc] init];
+    [newSource setFrequency:freq];
     [self.sourcesArray addObject:newSource];
 }
 
 - (void)processLeftOutput:(Float32 *)leftOutBuffer andRightOutput:(Float32 *)rightOutBuffer withNumFrames:(UInt32)numFrames {
-    
-    /*
-    Float32 *leftFrame = malloc(numFrames * sizeof(Float32));
-    Float32 *rightFrame = malloc(numFrames * sizeof(Float32));
+
+    Float32 leftFrame[numFrames];
+    Float32 rightFrame[numFrames];
+    memset(leftFrame, 0, numFrames * sizeof(UInt32));
+    memset(rightFrame, 0, numFrames * sizeof(UInt32));
     
     for (PASource *source in self.sourcesArray) {
-        NSLog(@"%@ - index %ld", source, (unsigned long)[self.sourcesArray indexOfObject:source]);
-        [source processBuffersLeft:leftOutBuffer right:rightOutBuffer withNumSamples:numFrames];
+        Float32 inputLeftFrame[numFrames];
+        Float32 inputRightFrame[numFrames];
         
-        int frame = 0;
-        for (frame = 0; frame < numFrames; ++frame) {
-            leftOutBuffer[frame] += leftFrame[frame];
-            rightOutBuffer[frame] += rightFrame[frame];
+        [source processBuffersLeft:inputLeftFrame right:inputRightFrame withNumSamples:numFrames];
+
+        for (int frame = 0; frame < numFrames; ++frame) {
+            leftFrame[frame] += inputLeftFrame[frame];
+            rightFrame[frame] += inputRightFrame[frame];
         }
         
     }
-     */
-    double j = self.startingFrameCount;
-    double cycleLength = 44100.0 / sineFrequency;
-    int frame = 0;
-    
-    for (frame = 0; frame < numFrames; ++frame) {
-        (leftOutBuffer)[frame] = (Float32)sin(2 * M_PI * (j / cycleLength));
-        (rightOutBuffer)[frame] = (Float32)sin(2 * M_PI * (j / cycleLength));
-        
-        j += 1.0;
-        if (j > cycleLength) {
-            j -= cycleLength;
-        }
-    }
-    self.startingFrameCount = j;
+    memcpy(leftOutBuffer, leftFrame, numFrames * sizeof(UInt32));
+    memcpy(rightOutBuffer, rightFrame, numFrames * sizeof(UInt32));
 }
 
 @end

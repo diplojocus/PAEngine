@@ -20,10 +20,10 @@
     if (self) {
    
         self.audioController = [[PAController alloc] init];
-        [self.audioController addSource];
-        // add sine wave generator object
-        
-        
+
+        [self.audioController addSourceWithFrequency:550.0];
+        [self.audioController addSourceWithFrequency:880.0];
+
     }
     return self;
 }

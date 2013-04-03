@@ -12,6 +12,8 @@
 
 @property (nonatomic, assign) double startingFrameCount;
 
+@property (nonatomic, assign) double frequency;
+
 - (void)processBuffersLeft:(Float32 *)leftBuffer right:(Float32 *)rightBuffer withNumSamples:(UInt32)inNumSamples;
 
 @end
