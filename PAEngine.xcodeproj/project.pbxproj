@@ -13,6 +13,8 @@
 		D87822CF1708BFFD0082391E /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D87822CE1708BFFD0082391E /* Cocoa.framework */; };
 		D87822F31708D3160082391E /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D87822F21708D3160082391E /* AudioToolbox.framework */; };
 		D87822F51708D31D0082391E /* AudioUnit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D87822F41708D31D0082391E /* AudioUnit.framework */; };
+		D8B1D426170CF3FE005573C1 /* libsndfile.a in Frameworks */ = {isa = PBXBuildFile; fileRef = D8B1D425170CF3FE005573C1 /* libsndfile.a */; };
+		D8B1D42D170CF94D005573C1 /* samples in Resources */ = {isa = PBXBuildFile; fileRef = D8B1D42C170CF94D005573C1 /* samples */; };
 		D8EB7063170CC50400BAE2A0 /* PASineGenerator.m in Sources */ = {isa = PBXBuildFile; fileRef = D8EB7062170CC50400BAE2A0 /* PASineGenerator.m */; };
 		D8EB7066170CD49600BAE2A0 /* PASamplePlayer.m in Sources */ = {isa = PBXBuildFile; fileRef = D8EB7065170CD49600BAE2A0 /* PASamplePlayer.m */; };
 		D8FE66CF170A36240079E816 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = D8FE66BD170A36240079E816 /* AppDelegate.m */; };
@@ -38,6 +40,9 @@
 		D87822D31708BFFD0082391E /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		D87822F21708D3160082391E /* AudioToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioToolbox.framework; path = System/Library/Frameworks/AudioToolbox.framework; sourceTree = SDKROOT; };
 		D87822F41708D31D0082391E /* AudioUnit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioUnit.framework; path = System/Library/Frameworks/AudioUnit.framework; sourceTree = SDKROOT; };
+		D8B1D425170CF3FE005573C1 /* libsndfile.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libsndfile.a; path = /usr/local/Cellar/libsndfile/1.0.25/lib/libsndfile.a; sourceTree = "<absolute>"; };
+		D8B1D427170CF40C005573C1 /* sndfile.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = sndfile.h; path = /usr/local/Cellar/libsndfile/1.0.25/include/sndfile.h; sourceTree = "<absolute>"; };
+		D8B1D42C170CF94D005573C1 /* samples */ = {isa = PBXFileReference; lastKnownFileType = folder; name = samples; path = Resources/samples; sourceTree = "<group>"; };
 		D8EB7061170CC50400BAE2A0 /* PASineGenerator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PASineGenerator.h; sourceTree = "<group>"; };
 		D8EB7062170CC50400BAE2A0 /* PASineGenerator.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PASineGenerator.m; sourceTree = "<group>"; };
 		D8EB7064170CD49600BAE2A0 /* PASamplePlayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PASamplePlayer.h; sourceTree = "<group>"; };
@@ -63,6 +68,7 @@
 				D87822F51708D31D0082391E /* AudioUnit.framework in Frameworks */,
 				D87822F31708D3160082391E /* AudioToolbox.framework in Frameworks */,
 				D87822CF1708BFFD0082391E /* Cocoa.framework in Frameworks */,
+				D8B1D426170CF3FE005573C1 /* libsndfile.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -135,9 +141,35 @@
 			name = "Other Frameworks";
 			sourceTree = "<group>";
 		};
+		D8B1D424170CF3F3005573C1 /* Libraries */ = {
+			isa = PBXGroup;
+			children = (
+				D8B1D428170CF46C005573C1 /* libsndfile */,
+			);
+			name = Libraries;
+			sourceTree = "<group>";
+		};
+		D8B1D428170CF46C005573C1 /* libsndfile */ = {
+			isa = PBXGroup;
+			children = (
+				D8B1D427170CF40C005573C1 /* sndfile.h */,
+				D8B1D425170CF3FE005573C1 /* libsndfile.a */,
+			);
+			name = libsndfile;
+			sourceTree = "<group>";
+		};
+		D8B1D429170CF8FA005573C1 /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				D8B1D42C170CF94D005573C1 /* samples */,
+			);
+			name = Resources;
+			sourceTree = "<group>";
+		};
 		D8FE66BB170A36240079E816 /* PAEngine */ = {
 			isa = PBXGroup;
 			children = (
+				D8B1D429170CF8FA005573C1 /* Resources */,
 				D8FE66BC170A36240079E816 /* AppDelegate.h */,
 				D8FE66BD170A36240079E816 /* AppDelegate.m */,
 				D8FE66C2170A36240079E816 /* MainMenu.xib */,
@@ -145,6 +177,7 @@
 				D8FE66C6170A36240079E816 /* MainViewController.m */,
 				D8FE66C7170A36240079E816 /* MainViewController.xib */,
 				D840201C170A3B7200A1E215 /* PlayfulEngine */,
+				D8B1D424170CF3F3005573C1 /* Libraries */,
 				D8069E31170A366A000943AA /* Supporting Files */,
 			);
 			path = PAEngine;
@@ -205,6 +238,7 @@
 				D8FE66D1170A36240079E816 /* InfoPlist.strings in Resources */,
 				D8FE66D2170A36240079E816 /* MainMenu.xib in Resources */,
 				D8FE66D5170A36240079E816 /* MainViewController.xib in Resources */,
+				D8B1D42D170CF94D005573C1 /* samples in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -321,6 +355,10 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "PAEngine/PAEngine-Prefix.pch";
 				INFOPLIST_FILE = "PAEngine/PAEngine-Info.plist";
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					/usr/local/Cellar/libsndfile/1.0.25/lib,
+				);
 				PRODUCT_NAME = PAEngine;
 				WRAPPER_EXTENSION = app;
 			};
@@ -333,6 +371,10 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "PAEngine/PAEngine-Prefix.pch";
 				INFOPLIST_FILE = "PAEngine/PAEngine-Info.plist";
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					/usr/local/Cellar/libsndfile/1.0.25/lib,
+				);
 				PRODUCT_NAME = PAEngine;
 				WRAPPER_EXTENSION = app;
 			};

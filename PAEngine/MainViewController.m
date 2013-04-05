@@ -9,7 +9,7 @@
 #import "MainViewController.h"
 
 #import "PASineGenerator.h"
-//#import "PASource.h"
+#import "PASamplePlayer.h"
 
 @interface MainViewController ()
 
@@ -26,7 +26,14 @@
 
         self.sineGenerator = [[PASineGenerator alloc] sineGeneratorWithFrequency:440.0];
         [self.sineGenerator setPan:0.5f];
-        [self.audioController addSoundSource:self.sineGenerator];
+//        [self.audioController addSoundSource:self.sineGenerator];
+        
+        NSString *filePath = [[NSBundle mainBundle] pathForResource:@"test" ofType:@"wav" inDirectory:@"samples"];
+        NSLog(@"filepath %@", filePath);
+        PASamplePlayer *samplePlayer = [[PASamplePlayer alloc] init];
+        [samplePlayer openFileWithPath:filePath];
+        [self.audioController addSoundSource:samplePlayer];
+        
 
     }
     return self;

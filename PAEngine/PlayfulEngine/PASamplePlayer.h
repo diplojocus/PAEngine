@@ -10,4 +10,11 @@
 
 @interface PASamplePlayer : PASource
 
+@property (readonly, nonatomic) long lengthInSamples;
+@property (readonly, nonatomic) Float32 *leftFileBuffer;
+@property (readonly, nonatomic) Float32 *rightFileBuffer;
+@property (nonatomic, assign) long currentReadPosition;
+
+- (void)openFileWithPath:(NSString *)path;
+
 @end

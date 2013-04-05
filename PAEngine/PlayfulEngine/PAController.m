@@ -127,10 +127,6 @@ OSStatus renderCallback (
         
         [source processBuffersLeft:leftSourceBuffer right:rightSourceBuffer numFrames:inNumberFrames];
         
-        for (int frame = 0; frame < inNumberFrames; ++frame) {
-            leftSumBuffer[frame] += leftSourceBuffer[frame];
-            rightSumBuffer[frame] += rightSourceBuffer[frame];
-        }
         vDSP_vadd(leftSumBuffer, 1, leftSourceBuffer, 1, leftSumBuffer, 1, inNumberFrames);
         vDSP_vadd(rightSumBuffer, 1, rightSourceBuffer, 1, rightSumBuffer, 1, inNumberFrames);
     }
