@@ -24,17 +24,14 @@
    
         self.audioController = [PAController sharedInstance];
 
-        self.sineGenerator = [[PASineGenerator alloc] sineGeneratorWithFrequency:440.0];
-        [self.sineGenerator setPan:0.5f];
+//        self.sineGenerator = [[PASineGenerator alloc] sineGeneratorWithFrequency:440.0];
+//        [self.sineGenerator setPan:0.5f];
 //        [self.audioController addSoundSource:self.sineGenerator];
         
-        NSString *filePath = [[NSBundle mainBundle] pathForResource:@"test" ofType:@"wav" inDirectory:@"samples"];
-        NSLog(@"filepath %@", filePath);
-        PASamplePlayer *samplePlayer = [[PASamplePlayer alloc] init];
-        [samplePlayer openFileWithPath:filePath];
-        [self.audioController addSoundSource:samplePlayer];
-        
-
+        NSString *filePath = [[NSBundle mainBundle] pathForResource:@"hihat" ofType:@"wav" inDirectory:@"samples"];
+        self.source = [[PASamplePlayer alloc] init];
+        [self.source openFileWithPath:filePath];
+        [self.audioController addSoundSource:self.source];
     }
     return self;
 }
@@ -44,12 +41,12 @@
 }
 
 - (IBAction)onPanSliderChange:(id)sender {
-    [self.sineGenerator setPan:[sender floatValue]];
+    [self.source setPan:[sender floatValue]];
     
 }
 
 - (IBAction)onVolumeSliderChange:(id)sender {
-    [self.sineGenerator setVolume:[sender floatValue]];
+    [self.source setVolume:[sender floatValue]];
 }
 
 - (void)destroy {

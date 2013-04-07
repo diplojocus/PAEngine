@@ -10,11 +10,12 @@
 #include "PAController.h"
 
 @class PASineGenerator;
+@class PASamplePlayer;
 
 @interface MainViewController : NSViewController
 
 @property (nonatomic, strong) PAController *audioController;
-@property (nonatomic, strong) PASineGenerator *sineGenerator;
+@property (nonatomic, strong) PASamplePlayer *source;
 
 - (void)destroy;
 

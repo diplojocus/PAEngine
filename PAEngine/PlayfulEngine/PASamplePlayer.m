@@ -15,7 +15,8 @@
     self = [super init];
     if (self) {
         // Defaults
-        _lengthInSamples = 0;
+        _numberChannels = 0;
+        _numberFrames = 0;
         [self setCurrentReadPosition:0];
         [self setPan:0.5];
         [self setVolume:0.5];
@@ -27,16 +28,18 @@
     SF_INFO inputFormat = {0};
     SNDFILE *inputFile = sf_open([path cStringUsingEncoding:NSUTF8StringEncoding], SFM_READ, &inputFormat);
     
-    _lengthInSamples = inputFormat.frames * inputFormat.channels;
+    _numberChannels = inputFormat.channels;
+    _numberFrames = inputFormat.frames;
     
-    Float32 fileBuffer[(inputFormat.frames * inputFormat.channels)];
-    _leftFileBuffer = (Float32 *)malloc((sizeof(Float32) * inputFormat.frames));
-    _rightFileBuffer = (Float32 *)malloc((sizeof(Float32) * inputFormat.frames));
+    Float32 fileBuffer[self.numberSamples];
     
-    long samplesRead = sf_read_float(inputFile, fileBuffer, (inputFormat.frames * inputFormat.channels));
+    _leftFileBuffer = (Float32 *)calloc(inputFormat.frames, sizeof(Float32));
+    _rightFileBuffer = (Float32 *)calloc(inputFormat.frames, sizeof(Float32));
+    
+    long samplesRead = sf_read_float(inputFile, fileBuffer, self.numberSamples);
     
     // de-interleave into two buffers
-    for (int i = 0; i < (samplesRead / inputFormat.channels); ++i) {
+    for (int i = 0; i < (samplesRead / _numberChannels); ++i) {
         *(_leftFileBuffer+i) = fileBuffer[i*2];
         *(_rightFileBuffer+i) = fileBuffer[i*2+1];
     }
@@ -47,11 +50,15 @@
                      right:(Float32 *)rightBuffer
                  numFrames:(UInt32)inNumberFrames {
     for (int i = 0; i < inNumberFrames; i++) {
-        *(leftBuffer+self.currentReadPosition) = *(_leftFileBuffer+self.currentReadPosition);
-        *(rightBuffer+self.currentReadPosition) = *(_rightFileBuffer+self.currentReadPosition);
-        long newReadPosition = self.currentReadPosition + 1;
-        self.currentReadPosition = newReadPosition % self.lengthInSamples;
+        *(leftBuffer+i) = *(_leftFileBuffer+_currentReadPosition) * cos(self.pan * M_PI_2) * self.volume;
+        *(rightBuffer+i) = *(_rightFileBuffer+_currentReadPosition) * sin(self.pan * M_PI_2) * self.volume;
+        long newReadPosition = _currentReadPosition + 1;
+        self.currentReadPosition = newReadPosition % self.numberFrames;
     }
+}
+
+- (long)numberSamples {
+    return _numberFrames * _numberChannels;
 }
 
 - (void)dealloc {

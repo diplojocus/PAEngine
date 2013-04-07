@@ -7,12 +7,24 @@
 //
 
 #import "PASource.h"
+#import "PAParameterAverager.h"
 
-@implementation PASource
+
+@implementation PASource {
+    PAParameterAverager *panAverager;
+    PAParameterAverager *volumeAverager;
+}
+
+@synthesize pan;
+@synthesize volume;
 
 - (id)init {
     self = [super init];
     if (self) {
+        
+        panAverager = [[PAParameterAverager alloc] init];
+        volumeAverager = [[PAParameterAverager alloc] init];
+        
         [self setPan:0.5f];
         [self setVolume:0.5f];
     }
@@ -24,14 +36,22 @@
                  numFrames:(UInt32)inNumberFrames {
 }
 
-- (void)setPan:(float)pan {
-    _pan = MIN(1.0f, pan);
-    _pan = MAX(0.0f, _pan);
+- (void)setPan:(float)newPan {
+    pan = MIN(1.0f, newPan);
+    pan = MAX(0.0f, pan);
 }
 
-- (void)setVolume:(float)volume {
-    _volume = MIN(1.0f, volume);
-    _volume = MAX(0.0f, _volume);
+- (float)pan {
+    return [panAverager process:pan];
+}
+
+- (void)setVolume:(float)newVolume {
+    volume = MIN(1.0f, newVolume);
+    volume = MAX(0.0f, volume);
+}
+
+- (float)volume {
+    return [volumeAverager process:volume];
 }
 
 @end
