@@ -17,7 +17,6 @@
 }
 
 - (void)applicationWillTerminate:(NSNotification *)notification {
-    
     [self.mainViewController destroy];
 }
 

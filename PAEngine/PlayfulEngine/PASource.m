@@ -9,7 +9,6 @@
 #import "PASource.h"
 #import "PAParameterAverager.h"
 
-
 @implementation PASource {
     PAParameterAverager *panAverager;
     PAParameterAverager *volumeAverager;

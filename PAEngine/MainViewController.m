@@ -9,7 +9,7 @@
 #import "MainViewController.h"
 
 #import "PASineGenerator.h"
-#import "PASamplePlayer.h"
+#import "PAClipPlayer.h"
 
 @interface MainViewController ()
 
@@ -21,19 +21,29 @@
 {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if (self) {
-   
         self.audioController = [PAController sharedInstance];
-
-//        self.sineGenerator = [[PASineGenerator alloc] sineGeneratorWithFrequency:440.0];
-//        [self.sineGenerator setPan:0.5f];
-//        [self.audioController addSoundSource:self.sineGenerator];
-        
-        NSString *filePath = [[NSBundle mainBundle] pathForResource:@"hihat" ofType:@"wav" inDirectory:@"samples"];
-        self.source = [[PASamplePlayer alloc] init];
-        [self.source openFileWithPath:filePath];
-        [self.audioController addSoundSource:self.source];
     }
     return self;
+}
+
+- (IBAction)onOpenAudioClipButton:(id)sender {
+    
+    [self.audioClipLabel setStringValue:@""];
+    [self.audioController stop];
+    [self.processButton setState:0];
+    [self.audioController removeAllSoundSources];
+    
+    NSOpenPanel *openPanel = [NSOpenPanel openPanel];
+    [openPanel setCanChooseFiles:YES];
+    [openPanel setCanChooseDirectories:NO];
+    [openPanel setAllowsMultipleSelection:NO];
+    
+    NSInteger clicked = [openPanel runModal];
+    if (clicked == NSFileHandlingPanelOKButton) {
+        NSURL *clipURL = [openPanel URL];
+        [self.audioController addAudioClipFromURL:clipURL];
+        [self.audioClipLabel setStringValue:[clipURL lastPathComponent]];
+    }
 }
 
 - (IBAction)onProcessButton:(id)sender {
@@ -41,12 +51,12 @@
 }
 
 - (IBAction)onPanSliderChange:(id)sender {
-    [self.source setPan:[sender floatValue]];
+//    [self.source setPan:[sender floatValue]];
     
 }
 
 - (IBAction)onVolumeSliderChange:(id)sender {
-    [self.source setVolume:[sender floatValue]];
+//    [self.source setVolume:[sender floatValue]];
 }
 
 - (void)destroy {

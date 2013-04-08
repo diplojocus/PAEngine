@@ -8,12 +8,19 @@
 
 #import "PASource.h"
 
-@interface PASamplePlayer : PASource
+typedef enum {
+    PAClipBufferChannelLeftOrMono = 0,
+    PAClipBufferChannelRight = 1,
+    PAClipBufferChannelMax
+} PAClipBufferChannel;
+
+@interface PAClipPlayer : PASource
 
 @property (readonly, nonatomic) long numberFrames;
 @property (readonly, nonatomic) int numberChannels;
-@property (readonly, nonatomic) Float32 *leftFileBuffer;
+@property (readonly, nonatomic) Float32 *leftOrMonoFileBuffer;
 @property (readonly, nonatomic) Float32 *rightFileBuffer;
+@property (readonly, nonatomic) Float32 **channelsArray;
 @property (nonatomic, assign) long currentReadPosition;
 
 - (void)openFileWithPath:(NSString *)path;

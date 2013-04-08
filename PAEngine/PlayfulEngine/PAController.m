@@ -11,6 +11,8 @@
 
 #import "PAController.h"
 #import "PASource.h"
+#import "PAClipPlayer.h"
+#import "PASineGenerator.h"
 
 static void CheckResult(OSStatus result, const char *operation) {
     if (result == noErr) return;
@@ -113,6 +115,16 @@ OSStatus renderCallback (
 
 - (void)addSoundSource:(PASource *)sourceObject {
     [self.sourcesArray addObject:sourceObject];
+}
+
+- (void)removeAllSoundSources {
+    [self.sourcesArray removeAllObjects];
+}
+
+- (void)addAudioClipFromURL:(NSURL *)clipURL {
+    PAClipPlayer *newClipPlayer = [[PAClipPlayer alloc] init];
+    [newClipPlayer openFileWithPath:[clipURL path]];
+    [self.sourcesArray addObject:newClipPlayer];
 }
 
 - (void)processBuffersLeft:(Float32 *)leftBuffer right:(Float32 *)rightBuffer numFrames:(UInt32)inNumberFrames {

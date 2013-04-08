@@ -27,6 +27,10 @@
 
 - (void)addSoundSource:(PASource *)sourceObject;
 
+- (void)addAudioClipFromURL:(NSURL *)clipURL;
+
+- (void)removeAllSoundSources;
+
 - (void)processBuffersLeft:(Float32 *)leftBuffer right:(Float32 *)rightBuffer numFrames:(UInt32)inNumberFrames;
 
 @end

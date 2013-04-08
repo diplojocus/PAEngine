@@ -9,18 +9,20 @@
 #import <Cocoa/Cocoa.h>
 #include "PAController.h"
 
-@class PASineGenerator;
-@class PASamplePlayer;
-
 @interface MainViewController : NSViewController
 
 @property (nonatomic, strong) PAController *audioController;
-@property (nonatomic, strong) PASamplePlayer *source;
+@property (strong) IBOutlet NSTextFieldCell *audioClipLabel;
+@property (strong) IBOutlet NSButton *processButton;
 
 - (void)destroy;
 
+- (IBAction)onOpenAudioClipButton:(id)sender;
+
 - (IBAction)onProcessButton:(id)sender;
+
 - (IBAction)onPanSliderChange:(id)sender;
+
 - (IBAction)onVolumeSliderChange:(id)sender;
 
 @end
