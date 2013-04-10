@@ -10,10 +10,12 @@
 
 @interface PAParameterAverager : NSObject
 
-@property (nonatomic, assign) float a;
-@property (readonly, assign) float b;
-@property (readonly, assign) float z;
+@property (readonly, nonatomic, assign) float a;
+@property (readonly, nonatomic, assign) float b;
+@property (readonly, nonatomic, assign) float z;
 
 - (float)process:(float)input;
+
+- (void)setAlpha:(float)newAlpha;
 
 @end

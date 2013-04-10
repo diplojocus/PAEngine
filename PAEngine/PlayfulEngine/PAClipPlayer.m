@@ -14,12 +14,11 @@
 - (id)init {
     self = [super init];
     if (self) {
-        // Defaults
+        _channelsArray = nil;
         _numberChannels = 0;
         _numberFrames = 0;
-        [self setCurrentReadPosition:0];
-        [self setPan:0.5];
-        [self setVolume:0.5];
+        _currentReadPosition = 0;
+        _fileName = @"";
     }
     return self;
 }
@@ -32,9 +31,10 @@
     // Retrieve file info
     SF_INFO inputFormat = {0};
     SNDFILE *inputFile = sf_open([path cStringUsingEncoding:NSUTF8StringEncoding], SFM_READ, &inputFormat);
+    _fileName = [path lastPathComponent];
     _numberChannels = MIN(inputFormat.channels, PAClipBufferChannelMax);
     _numberFrames = inputFormat.frames;
-    
+       
     // Load clip into temporary buffer;
     Float32 fileBuffer[self.numberSamples];
     long samplesRead = sf_read_float(inputFile, fileBuffer, self.numberSamples);
@@ -58,20 +58,22 @@
                  numFrames:(UInt32)inNumberFrames {
     for (int i = 0; i < inNumberFrames; i++) {
         if (_numberChannels == 1) {
-            *(leftBuffer+i) = _channelsArray[PAClipBufferChannelLeftOrMono][_currentReadPosition] * cos(self.pan * M_PI_2) * self.volume * 0.5f;
-            *(rightBuffer+i) = _channelsArray[PAClipBufferChannelLeftOrMono][_currentReadPosition] * sin(self.pan * M_PI_2) * self.volume * 0.5f;
+            *(leftBuffer+i) = _channelsArray[PAClipBufferChannelLeftOrMono][_currentReadPosition] * 0.5f;
+            *(rightBuffer+i) = _channelsArray[PAClipBufferChannelLeftOrMono][_currentReadPosition] * 0.5f;
         } else {
-            *(leftBuffer+i) = _channelsArray[PAClipBufferChannelLeftOrMono][_currentReadPosition] * self.volume;
-            *(rightBuffer+i) = _channelsArray[PAClipBufferChannelRight][_currentReadPosition] * self.volume;
+            *(leftBuffer+i) = _channelsArray[PAClipBufferChannelLeftOrMono][_currentReadPosition];
+            *(rightBuffer+i) = _channelsArray[PAClipBufferChannelRight][_currentReadPosition];
         }
         long newReadPosition = _currentReadPosition + 1;
-        self.currentReadPosition = newReadPosition % self.numberFrames;
+        _currentReadPosition = newReadPosition % _numberFrames;
     }
 }
 
 - (void)dealloc {
-    free(_leftOrMonoFileBuffer);
-    free(_rightFileBuffer);
+    for (int i = 0; i < _numberChannels; i++) {
+        free(_channelsArray[i]);
+    }
+    free(_channelsArray);
 }
 
 @end

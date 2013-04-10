@@ -14,17 +14,16 @@ typedef enum {
     PAClipBufferChannelMax
 } PAClipBufferChannel;
 
-@interface PAClipPlayer : PASource
+@interface PAClipPlayer : NSObject <PASourceProtocol>
 
-@property (readonly, nonatomic) long numberFrames;
-@property (readonly, nonatomic) int numberChannels;
-@property (readonly, nonatomic) Float32 *leftOrMonoFileBuffer;
-@property (readonly, nonatomic) Float32 *rightFileBuffer;
 @property (readonly, nonatomic) Float32 **channelsArray;
-@property (nonatomic, assign) long currentReadPosition;
-
-- (void)openFileWithPath:(NSString *)path;
+@property (readonly, nonatomic) int numberChannels;
+@property (readonly, nonatomic) long numberFrames;
+@property (readonly, nonatomic) long currentReadPosition;
+@property (readonly, nonatomic) NSString *fileName;
 
 - (long)numberSamples;
+
+- (void)openFileWithPath:(NSString *)path;
 
 @end

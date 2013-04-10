@@ -15,8 +15,6 @@
     if (self) {
         // Defaults
         [self setFrequency:440.0];
-        [self setPan:0.5];
-        [self setVolume:0.5];
     }
     return self;
 }

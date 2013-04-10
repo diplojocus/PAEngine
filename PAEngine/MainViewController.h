@@ -9,11 +9,16 @@
 #import <Cocoa/Cocoa.h>
 #include "PAController.h"
 
+@class PASource;
+
 @interface MainViewController : NSViewController
 
 @property (nonatomic, strong) PAController *audioController;
+@property (nonatomic, strong) PASource *currentSource;
 @property (strong) IBOutlet NSTextFieldCell *audioClipLabel;
 @property (strong) IBOutlet NSButton *processButton;
+@property (strong) IBOutlet NSSlider *panSlider;
+@property (strong) IBOutlet NSSlider *volumeSlider;
 
 - (void)destroy;
 

@@ -20,6 +20,11 @@
     return self;
 }
 
+- (void)setAlpha:(float)newAlpha {
+    _a = MIN(1.0f, newAlpha);
+    _a = MAX(0.0f, _a);
+}
+
 - (float)process:(float)input {
     _z = (input * _b) + (_z * _a);
     return _z;

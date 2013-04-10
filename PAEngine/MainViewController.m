@@ -8,8 +8,7 @@
 
 #import "MainViewController.h"
 
-#import "PASineGenerator.h"
-#import "PAClipPlayer.h"
+#import "PASource.h"
 
 @interface MainViewController ()
 
@@ -41,8 +40,9 @@
     NSInteger clicked = [openPanel runModal];
     if (clicked == NSFileHandlingPanelOKButton) {
         NSURL *clipURL = [openPanel URL];
-        [self.audioController addAudioClipFromURL:clipURL];
         [self.audioClipLabel setStringValue:[clipURL lastPathComponent]];
+        self.currentSource = [self.audioController addAudioClipFromURL:clipURL];
+        
     }
 }
 
@@ -51,16 +51,22 @@
 }
 
 - (IBAction)onPanSliderChange:(id)sender {
-//    [self.source setPan:[sender floatValue]];
+    [self.currentSource setPan:[sender floatValue]];
     
 }
 
 - (IBAction)onVolumeSliderChange:(id)sender {
-//    [self.source setVolume:[sender floatValue]];
+    [self.currentSource setVolume:[sender floatValue]];
 }
 
 - (void)destroy {
     [self.audioController destroy];
+}
+
+- (void)setCurrentSource:(PASource *)currentSource {
+    _currentSource = currentSource;
+    [self.panSlider setFloatValue:[currentSource pan]];
+    [self.volumeSlider setFloatValue:[currentSource volume]];
 }
 
 @end

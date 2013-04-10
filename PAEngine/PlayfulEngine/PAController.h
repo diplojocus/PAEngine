@@ -25,9 +25,7 @@
 
 - (void)stop;
 
-- (void)addSoundSource:(PASource *)sourceObject;
-
-- (void)addAudioClipFromURL:(NSURL *)clipURL;
+- (PASource *)addAudioClipFromURL:(NSURL *)clipURL;
 
 - (void)removeAllSoundSources;
 
