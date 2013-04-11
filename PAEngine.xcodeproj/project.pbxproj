@@ -14,6 +14,7 @@
 		D87822CF1708BFFD0082391E /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D87822CE1708BFFD0082391E /* Cocoa.framework */; };
 		D87822F31708D3160082391E /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D87822F21708D3160082391E /* AudioToolbox.framework */; };
 		D87822F51708D31D0082391E /* AudioUnit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D87822F41708D31D0082391E /* AudioUnit.framework */; };
+		D87FACC517161DE500749D07 /* PAEffectCombFilter.m in Sources */ = {isa = PBXBuildFile; fileRef = D87FACC417161DE500749D07 /* PAEffectCombFilter.m */; };
 		D8B1D426170CF3FE005573C1 /* libsndfile.a in Frameworks */ = {isa = PBXBuildFile; fileRef = D8B1D425170CF3FE005573C1 /* libsndfile.a */; };
 		D8B1D42D170CF94D005573C1 /* samples in Resources */ = {isa = PBXBuildFile; fileRef = D8B1D42C170CF94D005573C1 /* samples */; };
 		D8EB7063170CC50400BAE2A0 /* PASineGenerator.m in Sources */ = {isa = PBXBuildFile; fileRef = D8EB7062170CC50400BAE2A0 /* PASineGenerator.m */; };
@@ -43,6 +44,8 @@
 		D87822D31708BFFD0082391E /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		D87822F21708D3160082391E /* AudioToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioToolbox.framework; path = System/Library/Frameworks/AudioToolbox.framework; sourceTree = SDKROOT; };
 		D87822F41708D31D0082391E /* AudioUnit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioUnit.framework; path = System/Library/Frameworks/AudioUnit.framework; sourceTree = SDKROOT; };
+		D87FACC317161DE500749D07 /* PAEffectCombFilter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PAEffectCombFilter.h; sourceTree = "<group>"; };
+		D87FACC417161DE500749D07 /* PAEffectCombFilter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PAEffectCombFilter.m; sourceTree = "<group>"; };
 		D8B1D425170CF3FE005573C1 /* libsndfile.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libsndfile.a; path = /usr/local/Cellar/libsndfile/1.0.25/lib/libsndfile.a; sourceTree = "<absolute>"; };
 		D8B1D427170CF40C005573C1 /* sndfile.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = sndfile.h; path = /usr/local/Cellar/libsndfile/1.0.25/include/sndfile.h; sourceTree = "<absolute>"; };
 		D8B1D42C170CF94D005573C1 /* samples */ = {isa = PBXFileReference; lastKnownFileType = folder; name = samples; path = Resources/samples; sourceTree = "<group>"; };
@@ -103,6 +106,8 @@
 				D8EB7065170CD49600BAE2A0 /* PAClipPlayer.m */,
 				D83052291711DD94001DED71 /* PAParameterAverager.h */,
 				D830522A1711DD94001DED71 /* PAParameterAverager.m */,
+				D87FACC317161DE500749D07 /* PAEffectCombFilter.h */,
+				D87FACC417161DE500749D07 /* PAEffectCombFilter.m */,
 			);
 			path = PlayfulEngine;
 			sourceTree = "<group>";
@@ -262,6 +267,7 @@
 				D8EB7063170CC50400BAE2A0 /* PASineGenerator.m in Sources */,
 				D8EB7066170CD49600BAE2A0 /* PAClipPlayer.m in Sources */,
 				D830522B1711DD95001DED71 /* PAParameterAverager.m in Sources */,
+				D87FACC517161DE500749D07 /* PAEffectCombFilter.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

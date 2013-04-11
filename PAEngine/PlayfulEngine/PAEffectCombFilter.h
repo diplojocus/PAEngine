@@ -10,4 +10,12 @@
 
 @interface PAEffectCombFilter : NSObject
 
+@property (nonatomic, assign) float delayTimeMs;
+
+- (void)processLeftInput:(const float *)inputL
+           andRightInput:(const float *)inputR
+            toLeftOutput:(float *)outputL
+          andRightOutput:(float *)outputR
+         inNumberSamples:(unsigned int)numSamples;
+
 @end
