@@ -12,6 +12,7 @@
 
 #import "PAParameterAverager.h"
 #import "PAEffectCombFilter.h"
+#import "PAEffectAllPassFilter.h"
 
 #import "PAClipPlayer.h"
 #import "PASineGenerator.h"
@@ -19,10 +20,15 @@
 @implementation PASource {
     PAParameterAverager *panAverager;
     PAParameterAverager *volumeAverager;
+    
     PAEffectCombFilter *combFilter0;
     PAEffectCombFilter *combFilter1;
     PAEffectCombFilter *combFilter2;
     PAEffectCombFilter *combFilter3;
+    
+    PAEffectAllPassFilter *allPassFilter0;
+    PAEffectAllPassFilter *allPassFilter1;
+    
 }
 
 - (id)init {
@@ -39,10 +45,18 @@
         combFilter2 = [[PAEffectCombFilter alloc] init];
         combFilter3 = [[PAEffectCombFilter alloc] init];
         
-        [combFilter0 setDelayTimeMs:300.0f];
-        [combFilter1 setDelayTimeMs:30.0f];
-        [combFilter2 setDelayTimeMs:2000.0f];
-        [combFilter3 setDelayTimeMs:10.0f];
+        [combFilter0 setDelayTimeMs:29.7f];
+        [combFilter1 setDelayTimeMs:37.1];
+        [combFilter2 setDelayTimeMs:41.1f];
+        [combFilter3 setDelayTimeMs:43.7f];
+        
+        allPassFilter0 = [[PAEffectAllPassFilter alloc] init];
+        allPassFilter1 = [[PAEffectAllPassFilter alloc] init];
+        
+        [allPassFilter0 setDelayTimeMs:5.0f];
+        [allPassFilter0 setRt60:98.83f];
+        [allPassFilter1 setDelayTimeMs:1.7f];
+        [allPassFilter1 setRt60:32.92f];
         
     }
     return self;
@@ -95,8 +109,6 @@
     [combFilter2 processLeftInput:leftBuffer andRightInput:rightBuffer toLeftOutput:comb2OutputL andRightOutput:comb2OutputR inNumberSamples:inNumberFrames];
     [combFilter3 processLeftInput:leftBuffer andRightInput:rightBuffer toLeftOutput:comb3OutputL andRightOutput:comb3OutputR inNumberSamples:inNumberFrames];
 
-    
-    
     vDSP_vadd(comb0OutputL, 1, comb1OutputL, 1, sumBufferL, 1, inNumberFrames);
     vDSP_vadd(comb0OutputR, 1, comb1OutputR, 1, sumBufferR, 1, inNumberFrames);
     vDSP_vadd(comb2OutputL, 1, sumBufferL, 1, sumBufferL, 1, inNumberFrames);
@@ -108,14 +120,13 @@
     vDSP_vsmul(sumBufferL, 1, &combGain, sumBufferL, 1, inNumberFrames);
     vDSP_vsmul(sumBufferR, 1, &combGain, sumBufferR, 1, inNumberFrames);
     
-    printf("left samp: %f\t comb samp: %f\n", *leftBuffer, *sumBufferL);
-    
     // Add comb filters back to output buffer
     vDSP_vadd(leftBuffer, 1, sumBufferL, 1, leftBuffer, 1, inNumberFrames);
     vDSP_vadd(rightBuffer, 1, sumBufferR, 1, rightBuffer, 1, inNumberFrames);
     
-    // All pass filter 1
-    // All pass filter 2
+    // All pass filter 1 & 2
+//    [allPassFilter0 processLeftInput:leftBuffer andRightInput:rightBuffer inNumberSamples:inNumberFrames];
+//    [allPassFilter1 processLeftInput:leftBuffer andRightInput:rightBuffer inNumberSamples:inNumberFrames];
     
     // Volume param
     vDSP_vsmul(leftBuffer, 1, &leftGain, leftBuffer, 1, inNumberFrames);

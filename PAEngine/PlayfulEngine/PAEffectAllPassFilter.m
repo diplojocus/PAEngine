@@ -1,20 +1,17 @@
 //
-//  PAEffectCombFilter.m
+//  PAEffectAllPassFilter.m
 //  PAEngine
 //
-//  Created by Joe White on 10/04/2013.
+//  Created by Joe White on 12/04/2013.
 //  Copyright (c) 2013 Joe White. All rights reserved.
 //
 
-#include <math.h>
+#import "PAEffectAllPassFilter.h"
 
-#import "PAEffectCombFilter.h"
-
-@implementation PAEffectCombFilter {
+@implementation PAEffectAllPassFilter {
     float *delayBufferL;
     float *delayBufferR;
     float sampleRate;
-    float rt60;
     float g;
     unsigned int pos;
     unsigned int delaySizeInSamples;
@@ -26,7 +23,7 @@
         delayBufferL = nil;
         delayBufferR = nil;
         sampleRate = 44100.0f;
-        rt60 = 1000.0f;
+        _rt60 = 1000.0f;
         g = 0.0f;
         pos = 0;
         delaySizeInSamples = 0;
@@ -36,7 +33,7 @@
 
 - (void)setDelayTimeMs:(float)delayTime {
     _delayTimeMs = delayTime;
-    g = powf(0.001, _delayTimeMs / rt60);
+    g = powf(0.001, _delayTimeMs / _rt60);
     [self setBufferSize:(unsigned int)floorf(sampleRate * (_delayTimeMs / 1000.0f))];
 }
 
@@ -55,10 +52,8 @@
     }
 }
 
-- (void)processLeftInput:(const float *)inputL
-           andRightInput:(const float *)inputR
-            toLeftOutput:(float *)outputL
-          andRightOutput:(float *)outputR
+- (void)processLeftInput:(float *)inputL
+           andRightInput:(float *)inputR
          inNumberSamples:(unsigned int)numSamples {
     
     float tempOutL;
@@ -70,8 +65,8 @@
         tempOutR = delayBufferR[pos];
         delayBufferL[pos] = inputL[i] + tempOutL * g;
         delayBufferR[pos] = inputR[i] + tempOutR * g;
-        outputL[i] = tempOutL;
-        outputR[i] = tempOutR;
+        inputL[i] = tempOutL - (g * inputL[i]);
+        inputR[i] = tempOutR - (g * inputR[i]);
         [self incrementReadPos];
     }
 }

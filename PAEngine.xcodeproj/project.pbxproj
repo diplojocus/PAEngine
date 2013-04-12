@@ -11,6 +11,7 @@
 		D830522B1711DD95001DED71 /* PAParameterAverager.m in Sources */ = {isa = PBXBuildFile; fileRef = D830522A1711DD94001DED71 /* PAParameterAverager.m */; };
 		D8402021170A3B7200A1E215 /* PAController.m in Sources */ = {isa = PBXBuildFile; fileRef = D840201E170A3B7200A1E215 /* PAController.m */; };
 		D8402022170A3B7200A1E215 /* PASource.m in Sources */ = {isa = PBXBuildFile; fileRef = D8402020170A3B7200A1E215 /* PASource.m */; };
+		D85B7523171778030032402E /* PAEffectAllPassFilter.m in Sources */ = {isa = PBXBuildFile; fileRef = D85B7522171778030032402E /* PAEffectAllPassFilter.m */; };
 		D87822CF1708BFFD0082391E /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D87822CE1708BFFD0082391E /* Cocoa.framework */; };
 		D87822F31708D3160082391E /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D87822F21708D3160082391E /* AudioToolbox.framework */; };
 		D87822F51708D31D0082391E /* AudioUnit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D87822F41708D31D0082391E /* AudioUnit.framework */; };
@@ -37,6 +38,8 @@
 		D840201E170A3B7200A1E215 /* PAController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PAController.m; sourceTree = "<group>"; };
 		D840201F170A3B7200A1E215 /* PASource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PASource.h; sourceTree = "<group>"; };
 		D8402020170A3B7200A1E215 /* PASource.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PASource.m; sourceTree = "<group>"; };
+		D85B7521171778030032402E /* PAEffectAllPassFilter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PAEffectAllPassFilter.h; sourceTree = "<group>"; };
+		D85B7522171778030032402E /* PAEffectAllPassFilter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PAEffectAllPassFilter.m; sourceTree = "<group>"; };
 		D87822CB1708BFFD0082391E /* PAEngine.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = PAEngine.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		D87822CE1708BFFD0082391E /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = System/Library/Frameworks/Cocoa.framework; sourceTree = SDKROOT; };
 		D87822D11708BFFD0082391E /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = System/Library/Frameworks/AppKit.framework; sourceTree = SDKROOT; };
@@ -108,6 +111,8 @@
 				D830522A1711DD94001DED71 /* PAParameterAverager.m */,
 				D87FACC317161DE500749D07 /* PAEffectCombFilter.h */,
 				D87FACC417161DE500749D07 /* PAEffectCombFilter.m */,
+				D85B7521171778030032402E /* PAEffectAllPassFilter.h */,
+				D85B7522171778030032402E /* PAEffectAllPassFilter.m */,
 			);
 			path = PlayfulEngine;
 			sourceTree = "<group>";
@@ -268,6 +273,7 @@
 				D8EB7066170CD49600BAE2A0 /* PAClipPlayer.m in Sources */,
 				D830522B1711DD95001DED71 /* PAParameterAverager.m in Sources */,
 				D87FACC517161DE500749D07 /* PAEffectCombFilter.m in Sources */,
+				D85B7523171778030032402E /* PAEffectAllPassFilter.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
